@@ -30,5 +30,6 @@ RUN wget -q https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/${GODOT
 RUN mkdir /test && \
     rm -f -R /tmp/godot
 WORKDIR /test
+COPY entrypoint.sh .
 
-CMD ["godot", "--headless", "--version"]
+ENTRYPOINT ["/test/entrypoint.sh"]
