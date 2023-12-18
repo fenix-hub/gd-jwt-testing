@@ -23,8 +23,6 @@ RUN wget -q https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/${GODOT
     && mv ${GODOT_FULLNAME} /usr/local/bin/godot \
     && rm -f ${GODOT_FULLNAME}.${ARCHIVE_FORMAT}
 
-RUN rm -R -f /var/cache/apk/*
-
 # Move to a test directory to execute the test suite project
 RUN mkdir /test
 WORKDIR /test
