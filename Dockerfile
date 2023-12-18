@@ -13,8 +13,8 @@ RUN apk update \
 
 # Allow this to run Godot
 RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
-    && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk \
-    && apk add --force-overwrite glibc-2.28-r0.apk \
+    && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk \
+    && apk add --no-cache --force-overwrite glibc-2.28-r0.apk \
     && rm -f glibc-2.28-r0.apk
 
 # Work in a temp directory to download Godot and add the binary to PATH
@@ -22,14 +22,16 @@ RUN mkdir /tmp/godot
 WORKDIR /tmp/godot
 
 # Download Godot
-RUN wget https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/${GODOT_FULLNAME}.${ARCHIVE_FORMAT} \
+RUN wget -q https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/${GODOT_FULLNAME}.${ARCHIVE_FORMAT} \
     && unzip ${GODOT_FULLNAME}.${ARCHIVE_FORMAT} \
     && mv ${GODOT_FULLNAME} /usr/local/bin/godot \
     && rm -f ${GODOT_FULLNAME}.${ARCHIVE_FORMAT}
+
+RUN rm -R -f /var/cache/apk/*
 
 # Move to a test directory to execute the test suite project
 RUN mkdir /test
 WORKDIR /test
 RUN rm -f -R /tmp/godot
 
-CMD godot --headless --version
+CMD ["godot", "--headless", "--version"]
