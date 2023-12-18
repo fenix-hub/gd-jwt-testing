@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.19.0
 
 # Environment Variables
 ENV GODOT_VERSION "4.2"
@@ -7,15 +7,11 @@ ENV GODOT_ARCHITECTURE "x86_64"
 ENV ARCHIVE_FORMAT "zip"
 ENV GODOT_FULLNAME "Godot_v${GODOT_VERSION}-${OS}.${GODOT_ARCHITECTURE}"
 
-# Updates and installs to the server
-RUN apk update \
-    && apk add --no-cache bash wget git ca-certificates
-
-# Allow this to run Godot
+# Allow this to run Godot with specified glibc version
 RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
-    && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk \
-    && apk add --no-cache --force-overwrite glibc-2.28-r0.apk \
-    && rm -f glibc-2.28-r0.apk
+    && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
+    && apk add --no-cache --force-overwrite glibc-${GLIBC_VERSION}.apk \
+    && rm -f glibc-${GLIBC_VERSION}.apk
 
 # Work in a temp directory to download Godot and add the binary to PATH
 RUN mkdir /tmp/godot
