@@ -7,6 +7,9 @@ ENV GODOT_ARCHITECTURE "x86_64"
 ENV ARCHIVE_FORMAT "zip"
 ENV GODOT_FULLNAME "Godot_v${GODOT_VERSION}-${OS}.${GODOT_ARCHITECTURE}"
 
+# Specify versions
+ARG GLIBC_VERSION=2.28-r0
+
 # Allow this to run Godot with specified glibc version
 RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
     && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
