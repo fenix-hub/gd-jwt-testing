@@ -6,12 +6,17 @@ ENV OS "stable_linux"
 ENV GODOT_ARCHITECTURE "x86_64"
 ENV ARCHIVE_FORMAT "zip"
 ENV GODOT_FULLNAME "Godot_v${GODOT_VERSION}-${OS}.${GODOT_ARCHITECTURE}"
+ENV GODOT_JWT_BRANCH "main-godot4"
 
 # Specify versions
 ARG GLIBC_VERSION=2.28-r0
+ARG GIT_VERSION=2.43.0-r0
 
 # Allow this to run Godot with specified glibc version
-RUN wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+
+RUN apk update \
+    && apk add --no-cache git=${GIT_VERSION} \
+    && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
     && wget -q https://github.com/sgerrand/alpine-pkg-glibc/releases/download/${GLIBC_VERSION}/glibc-${GLIBC_VERSION}.apk \
     && apk add --no-cache --force-overwrite glibc-${GLIBC_VERSION}.apk \
     && rm -f glibc-${GLIBC_VERSION}.apk
@@ -30,6 +35,9 @@ RUN wget -q https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/${GODOT
 RUN mkdir /test && \
     rm -f -R /tmp/godot
 WORKDIR /test
+
+RUN git clone -b ${GODOT_JWT_BRANCH} https://github.com/fenix-hub/godot-engine.jwt
+
 COPY entrypoint.sh .
 
 ENTRYPOINT ["/test/entrypoint.sh"]
