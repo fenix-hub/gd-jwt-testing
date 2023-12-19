@@ -42,14 +42,11 @@ func test_verify(jwt: String, secret: String) -> bool:
 func decode_hs256_jwt(jwt: String) -> Dictionary:
 	return JWTDecoder.new(jwt).get_claims()
 
-var table: String = "|     TEST CASE     | EXECUTION TIME | PASSED | \n" + \
-("|%019d|%016d|%08d| \n" % [0, 0, 0]).replacen("0", "-")
+var table: String = "|     TEST CASE     | EXECUTION TIME | PASSED | \n" + ("|%019d|%016d|%08d| \n" % [0, 0, 0]).replacen("0", "-")
+var all_passed: bool = false
 
-# Called when the node enters the scene tree for the first time.
-func _init():
-	print("> Executing tests.\n")
-	
-	var all_passed: bool = false
+# Execute tests
+func execute_tests() -> void:
 	for test in test_cases.keys():
 		var t0: int = Time.get_ticks_msec()
 		var passed: bool = test_cases[test].call(inputs[test])
@@ -57,8 +54,7 @@ func _init():
 		table += "| %17s | %14s |   %s   | \n" % [test, str(t1 - t0) + "ms", "✅" if passed else "⛔"]
 		all_passed = passed and all_passed
 
-	print("> Test executed, writing output.\n")
-
+func write_output() -> void:
 	var output_path: String = OS.get_environment("OUTPUT_PATH")
 	DirAccess.make_dir_recursive_absolute(output_path) 
 	
@@ -68,8 +64,16 @@ func _init():
 	file = FileAccess.open(output_path.path_join("passed"), FileAccess.WRITE)
 	file.store_string(str(all_passed))
 
-	print(table)
-	
+# Called when the node enters the scene tree for the first time.
+func _init():
+	print("> Executing tests.\n")
+	execute_tests()
+
+	print("> Test executed, writing output.\n")
+	write_output()
+
 	print("> Done.")
+	print(table)
+
 	quit()
 

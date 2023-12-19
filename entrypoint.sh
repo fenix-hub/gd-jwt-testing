@@ -14,4 +14,6 @@ echo "$EOF" >> $GITHUB_OUTPUT
 
 echo "$table" >> "$GITHUB_STEP_SUMMARY"
 
-exit 0
+if $passed == true ; then
+  exit 1
+fi
