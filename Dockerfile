@@ -36,7 +36,13 @@ RUN mkdir /test && \
     rm -f -R /tmp/godot
 WORKDIR /test
 
-RUN git clone -b ${GODOT_JWT_BRANCH} https://github.com/fenix-hub/godot-engine.jwt
+COPY src/ src/
+
+RUN wget -q https://github.com/fenix-hub/godot-engine.jwt/archive/refs/heads/${GODOT_JWT_BRANCH}.zip \
+    && unzip ${GODOT_JWT_BRANCH}.zip \
+    && mv godot-engine.jwt-${GODOT_JWT_BRANCH}/addons src/ \
+    && ls -la src/ \
+    && rm -f ${GODOT_JWT_BRANCH}.zip
 
 COPY entrypoint.sh .
 
