@@ -2,8 +2,8 @@
 
 godot --headless --path "/test/src" -s test.gd --disable-render-loop --quit
 
-passed=$(cat /test/src/passed)
-table=$(cat /test/src/table)
+passed=$(cat $OUTPUT_PATH/passed)
+table=$(cat $OUTPUT_PATH/table)
 echo "passed=$passed" >> "$GITHUB_OUTPUT"
 echo "table=$table" >> "$GITHUB_OUTPUT"
 echo "$table" >> "$GITHUB_STEP_SUMMARY"

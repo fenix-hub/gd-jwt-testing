@@ -54,7 +54,7 @@ func _init():
 		var t0: int = Time.get_ticks_msec()
 		var passed: bool = test_cases[test].call(inputs[test])
 		var t1: int = Time.get_ticks_msec()
-		table += "| %17s | %14s | %6s | \n" % [test, str(t1 - t0) + "ms", "✅" if passed else "⛔"]
+		table += "| %17s | %14s | %5s | \n" % [test, str(t1 - t0) + "ms", "✅" if passed else "⛔"]
 		all_passed = passed and all_passed
 	
 	print("> Test executed.\n")
