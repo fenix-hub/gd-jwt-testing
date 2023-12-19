@@ -14,6 +14,7 @@ echo "$EOF" >> $GITHUB_OUTPUT
 
 echo "$table" >> "$GITHUB_STEP_SUMMARY"
 
-if $passed == false ; then
-  exit 1
+if [ "$passed" = "false" ] ; then
+    echo "Not all test passed"
+    exit 1
 fi
