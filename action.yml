@@ -1,6 +1,6 @@
-name: Hello, World!
-description: Greet someone and record the time
-author: GitHub Actions
+name: Godot Engine JWT Tests
+description: Testsuite for Godot Engine JSON Web Token library
+author: fenix-hub
 
 # Define your inputs here.
 # inputs:
