@@ -54,11 +54,11 @@ func _init():
 		var t0: int = Time.get_ticks_msec()
 		var passed: bool = test_cases[test].call(inputs[test])
 		var t1: int = Time.get_ticks_msec()
-		table += "| %17s | %14s | %5s | \n" % [test, str(t1 - t0) + "ms", "✅" if passed else "⛔"]
+		table += "| %17s | %14s |   %s   | \n" % [test, str(t1 - t0) + "ms", "✅" if passed else "⛔"]
 		all_passed = passed and all_passed
-	
-	print("> Test executed.\n")
-	
+
+	print("> Test executed, writing output.\n")
+
 	var output_path: String = OS.get_environment("OUTPUT_PATH")
 	DirAccess.make_dir_recursive_absolute(output_path) 
 	
@@ -67,7 +67,9 @@ func _init():
 	
 	file = FileAccess.open(output_path.path_join("passed"), FileAccess.WRITE)
 	file.store_string(str(all_passed))
-	
+
 	print(table)
+	
+	print("> Done.")
 	quit()
 
