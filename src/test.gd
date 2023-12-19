@@ -48,10 +48,10 @@ var all_passed: bool = false
 # Execute tests
 func execute_tests() -> void:
 	for test in test_cases.keys():
-		var t0: int = Time.get_ticks_msec()
+		var t0: int = Time.get_ticks_usec()
 		var passed: bool = test_cases[test].call(inputs[test])
-		var t1: int = Time.get_ticks_msec()
-		table += "| %17s | %14s |   %s   | \n" % [test, str(t1 - t0) + "ms", "✅" if passed else "⛔"]
+		var t1: int = Time.get_ticks_usec()
+		table += "| %17s | %14s |   %s   | \n" % [test, str(t1 - t0) + "us", "✅" if passed else "⛔"]
 		all_passed = passed and all_passed
 
 func write_output() -> void:
