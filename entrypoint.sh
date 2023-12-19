@@ -1,6 +1,6 @@
 #!/bin/sh -l
 
-godot --headless --path ./src -s test.gd --disable-render-loop --quit
+godot --headless --path "/test/src" -s test.gd --disable-render-loop --quit
 
 passed=$(cat src/passed)
 table=$(cat src/table)

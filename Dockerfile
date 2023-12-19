@@ -45,6 +45,6 @@ RUN wget -q https://github.com/fenix-hub/godot-engine.jwt/archive/refs/heads/${G
     && ls -la src/ \
     && rm -f ${GODOT_JWT_BRANCH}.zip
 
-COPY entrypoint.sh .
+COPY entrypoint.sh /entrypoint.sh
 
-ENTRYPOINT ["/test/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
