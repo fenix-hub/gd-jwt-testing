@@ -47,20 +47,25 @@ var table: String = "|     TEST CASE     | EXECUTION TIME | PASSED | \n" + \
 
 # Called when the node enters the scene tree for the first time.
 func _init():
-	print("> Executing tests.")
+	print("> Executing tests.\n")
 	
 	var all_passed: bool = false
 	for test in test_cases.keys():
 		var t0: int = Time.get_ticks_msec()
 		var passed: bool = test_cases[test].call(inputs[test])
 		var t1: int = Time.get_ticks_msec()
-		table += "| %17s | %14s | %5s | \n" % [test, str(t1 - t0) + "ms", "✅" if passed else "⛔"]
+		table += "| %17s | %14s | %6s | \n" % [test, str(t1 - t0) + "ms", "✅" if passed else "⛔"]
 		all_passed = passed and all_passed
 	
-	var file = FileAccess.open("table", FileAccess.WRITE)
+	print("> Test executed.\n")
+	
+	var output_path: String = OS.get_environment("OUTPUT_PATH")
+	DirAccess.make_dir_recursive_absolute(output_path) 
+	
+	var file = FileAccess.open(output_path.path_join("table"), FileAccess.WRITE)
 	file.store_string(table)
 	
-	file = FileAccess.open("passed", FileAccess.WRITE)
+	file = FileAccess.open(output_path.path_join("passed"), FileAccess.WRITE)
 	file.store_string(str(all_passed))
 	
 	print(table)
