@@ -1,111 +1,41 @@
-# Hello, World! Docker Action
+# Godot Engine JSONWebToken Testing - Docker Action
 
-[![GitHub Super-Linter](https://github.com/actions/hello-world-docker-action/actions/workflows/linter.yml/badge.svg)](https://github.com/super-linter/super-linter)
-![CI](https://github.com/actions/hello-world-docker-action/actions/workflows/ci.yml/badge.svg)
+This is a Github action that automatically executes tests on the [Godot Engine JWT Addon](https://github.com/fenix-hub/godot-engine.jwt) inside a Docker container.
 
-This action prints `Hello, World!` or `Hello, <who-to-greet>!` to the log. To
-learn how this action was built, see
-[Creating a Docker container action](https://docs.github.com/en/actions/creating-actions/creating-a-docker-container-action).
+The `src/` folder contains a Godot Engine 4.x project with a very small unit testing framework I've written myself in order to execute tests on the addon.
 
-## Create Your Own Action
+## Concept
 
-To create your own action, you can use this repository as a template! Just
-follow the below instructions:
+The testing framework is composed of three main classes:
 
-1. Click the **Use this template** button at the top of the repository
-1. Select **Create a new repository**
-1. Select an owner and name for your new repository
-1. Click **Create repository**
-1. Clone your new repository
+* `TestSuite`: it is a collection of tests belonging to a logical/functional context. Basically a test case is defined through a method whose name starts with the `test_*` prefix. The TestRunner will pick up automatically any method and execute it. Inside a test, assertions functions can be used in order to let the framework follow the rules and extract a report.
+* `TestRunner`: it is the executor of the test suites and test cases. It can be instantiated and a list of TestSuites can be provided. They will be executed in order, then a summary will be generated and stored by the runner. The summary can be printed manually, or passed to a `TestReport` object.
+* `TestReport`: it can be used to generate a formatted report of the whole test procedure. Files name `passed`, `table` and `failures` will be generated, containing the results.
 
-> [!CAUTION]
->
-> Make sure to remove or update the [`CODEOWNERS`](./CODEOWNERS) file! For
-> details on how to use this file, see
-> [About code owners](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners).
+### Example of a TestSuite
 
-## Usage
+```gdscript
+class ExampleTestSuite
+extends TestSuite
 
-Here's an example of how to use this action in a workflow file:
-
-```yaml
-name: Example Workflow
-
-on:
-  workflow_dispatch:
-    inputs:
-      who-to-greet:
-        description: Who to greet in the log
-        required: true
-        default: 'World'
-        type: string
-
-jobs:
-  say-hello:
-    name: Say Hello
-    runs-on: ubuntu-latest
-
-    steps:
-      # Change @main to a specific commit SHA or version tag, e.g.:
-      # actions/hello-world-docker-action@e76147da8e5c81eaf017dede5645551d4b94427b
-      # actions/hello-world-docker-action@v1.2.3
-      - name: Print to Log
-        id: print-to-log
-        uses: actions/hello-world-docker-action@main
-        with:
-          who-to-greet: ${{ inputs.who-to-greet }}
+func test_example() -> void:
+	var a: int = 1
+	var b: int = 2
+	assert_eq(a + b, 3)
 ```
 
-For example workflow runs, check out the
-[Actions tab](https://github.com/actions/hello-world-docker-action/actions)!
-:rocket:
+### Example of an execution
+```gdscript
+class Node
 
-## Inputs
-
-| Input          | Default | Description                     |
-| -------------- | ------- | ------------------------------- |
-| `who-to-greet` | `World` | The name of the person to greet |
-
-## Outputs
-
-| Output | Description             |
-| ------ | ----------------------- |
-| `time` | The time we greeted you |
-
-## Test Locally
-
-After you've cloned the repository to your local machine or codespace, you'll
-need to perform some initial setup steps before you can test your action.
-
-> [!NOTE]
->
-> You'll need to have a reasonably modern version of
-> [Docker](https://www.docker.com/get-started/) handy (e.g. docker engine
-> version 20 or later).
-
-1. :hammer_and_wrench: Build the container
-
-   Make sure to replace `actions/hello-world-docker-action` with an appropriate
-   label for your container.
-
-   ```bash
-   docker build -t actions/hello-world-docker-action .
-   ```
-
-1. :white_check_mark: Test the container
-
-   You can pass individual environment variables using the `--env` or `-e` flag.
-
-   ```bash
-   $ docker run --env INPUT_WHO_TO_GREET="Mona Lisa Octocat" actions/hello-world-docker-action
-   ::notice file=entrypoint.sh,line=7::Hello, Mona Lisa Octocat!
-   ```
-
-   Or you can pass a file with environment variables using `--env-file`.
-
-   ```bash
-   $ echo "INPUT_WHO_TO_GREET=\"Mona Lisa Octocat\"" > ./.env.test
-
-   $ docker run --env-file ./.env.test actions/hello-world-docker-action
-   ::notice file=entrypoint.sh,line=7::Hello, Mona Lisa Octocat!
-   ```
+func _ready() -> void:
+  var test_runner: TestRunner = TestRunner.new()
+	
+	test_runner.run([
+		ExampleTestSuite.new("example_test_suite")
+	])
+	
+	TestReport.new(test_runner.summary).generate()
+	
+	quit()
+```

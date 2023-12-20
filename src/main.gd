@@ -11,4 +11,3 @@ func _init():
 	TestReport.new(test_runner.summary).generate()
 	
 	quit()
-
