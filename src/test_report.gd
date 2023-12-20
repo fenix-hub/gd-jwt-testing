@@ -25,7 +25,7 @@ func generate() -> void:
 	for test in summary.tests:
 		table += ROW_FORMAT % [
 			test.suite, test.case, str(test.duration) + "ms", test.successes, 
-			test.failures, "✅" if test.failures < 0 else "⛔"
+			test.failures, "✅" if test.failures == 0 else "⛔"
 		]
 		
 		if test.failures > 0:
