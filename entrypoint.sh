@@ -22,9 +22,10 @@ EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
 }   >> "$GITHUB_OUTPUT"
 
 {
-    echo "Summary:\n"
-    echo "$table\n"
-    echo "Failures:\n"
+    echo "Summary:  "
+    echo "$table"
+    echo "  "
+    echo "Failures:  "
     echo "$failures"
 }   >> "$GITHUB_STEP_SUMMARY"
 
