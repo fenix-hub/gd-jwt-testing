@@ -29,7 +29,7 @@ func test_example() -> void:
 class Node
 
 func _ready() -> void:
-  var test_runner: TestRunner = TestRunner.new()
+	var test_runner: TestRunner = TestRunner.new()
 	
 	test_runner.run([
 		ExampleTestSuite.new("example_test_suite")
