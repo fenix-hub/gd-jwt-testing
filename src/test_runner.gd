@@ -21,10 +21,10 @@ func run_test(test_suite: TestSuite, test_name: String):
 	
 	if test_suite.failures > 0:
 		print("[FAIL] " + test_name)
-		summary.successes += 1
+		summary.failures += 1
 	else:
 		print("[PASS] " + test_name)
-		summary.failures += 1
+		summary.successes += 1
 	
 	summary.tests.append({
 		case = test_name,

@@ -42,7 +42,7 @@ func generate() -> void:
 	file.store_string(failures)
 	
 	file = FileAccess.open(output_path.path_join("passed"), FileAccess.WRITE)
-	file.store_string(str(summary.failures < 1))
+	file.store_string(str(summary.failures == 0))
 	
 	print(table)
 	print(failures)
