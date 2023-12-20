@@ -9,7 +9,7 @@ var summary: Dictionary = {
 
 func run(test_suites: Array[TestSuite]):
 	for test_suite in test_suites:
-		print("\nRunning test suite: ", test_suite.get_name())
+		print("\n> Running test suite: ", test_suite.get_name())
 		for method in test_suite.get_method_list():
 			if method.name.begins_with("test_"):
 				run_test(test_suite, method.name)
@@ -20,10 +20,10 @@ func run_test(test_suite: TestSuite, test_name: String):
 	var t1: int = Time.get_ticks_usec()
 	
 	if test_suite.failures > 0:
-		print("[FAIL] " + test_name)
+		print("		[FAIL] " + test_name)
 		summary.failures += 1
 	else:
-		print("[PASS] " + test_name)
+		print("		[PASS] " + test_name)
 		summary.successes += 1
 	
 	summary.tests.append({
