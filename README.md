@@ -1,6 +1,6 @@
 # Godot Engine JSONWebToken Testing - Docker Action
 
-This is a Github action that automatically executes tests on the [Godot Engine JWT Addon](https://github.com/fenix-hub/godot-engine.jwt) inside a Docker container.
+This is a GitHub action that automatically executes tests on the [Godot Engine JWT Addon](https://github.com/fenix-hub/godot-engine.jwt) inside a Docker container.
 
 The `src/` folder contains a Godot Engine 4.x project with a very small unit testing framework I've written myself to execute tests on the addon.
 
